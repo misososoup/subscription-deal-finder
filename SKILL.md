@@ -57,7 +57,15 @@ Categories — matches `deal_log.py`'s `--category` choices and the dashboard:
 it, but never treat it as a source of truth for pricing; everything below
 gets verified live.
 
-## Step 2 — Search exhaustively, verify on the official domain
+## Step 2 — Search exhaustively, verify on the official domain, every single run
+
+Subscription pricing changes constantly and is past this model's training
+cutoff. **Every run does a fresh live web search, every time — nothing here
+is ever served from a stored file or cached from an earlier run.** If a user
+asks the same question twice in a row, or asks something a prior run already
+covered, search again anyway; don't reuse a number from earlier in the
+conversation. (`deals_log.json`, in Step 5, is a separate thing — it never
+supplies pricing; see that step for what it's actually for.)
 
 1. For every provider, run more than one query angle before concluding
    there's nothing — a single search missing a real offer is how deals get
@@ -76,15 +84,19 @@ gets verified live.
    link field. If you genuinely cannot find an official page at all, don't
    log the deal.
 3. Note conditions exactly as stated — plan tier, autopay, new-line
-   requirement, enrollment steps.
+   requirement, enrollment steps. (What counts as a "condition" is defined
+   precisely in Step 4 — read that before writing this field.)
 4. Never invent a price, percentage, or promo name. If a number isn't
    explicitly stated by the source, leave the value fields blank rather than
    estimate or derive one.
-5. Before finishing, do a quick self-check: which providers from Step 1 did
-   you actually search, and which did you skip? If you're reporting fewer
-   than a handful of results for a broad request like "check for subscription
-   deals," that's a signal to go back and cover more of the checklist rather
-   than stop early — a thin result set undermines trust in the whole tool.
+5. Before finishing, do a quick self-check on scope: if the user asked a
+   broad, unscoped question ("check for subscription deals"), which
+   providers from Step 1 did you actually search, and which did you skip?
+   Thin results on a broad ask undermines trust, so go back and cover more
+   rather than stop early. If instead the user asked about one specific
+   thing ("how do I watch the US Open", "any deals on Spotify"), searching
+   just that thing *is* full coverage — there's no separate scope check
+   needed, and nothing to caveat about other categories you didn't touch.
 
 ## Step 3 — Write each entry so a customer can act on it, not just read it
 
@@ -96,14 +108,29 @@ For every deal, be explicit about:
   fact about ESPN's naming, not something a customer needs — what they need
   is "$11.99/mo gets you ESPN+ content; $29.99/mo also gets you live ESPN TV
   channels.")
-- **Effort** — `low` (you likely already have the account/card; this is just
-  enrolling in or redeeming an existing benefit), `medium` (a new,
-  standalone subscription/membership — no need to switch anything you
-  already use), or `high` (requires switching carriers/ISPs, opening a new
-  account, or a new phone line). When a deal's effort genuinely depends on
-  what the user already has (e.g. a credit-card credit assumes they hold the
-  card), say so explicitly in the conditions rather than picking one label
-  and hiding the assumption.
+- **Whether they might already have this for free**, before anything else.
+  Check whether an existing provider, plan, or membership the customer
+  plausibly already holds already includes what they're asking about (a
+  cable/streaming bundle that already carries a channel, a card benefit
+  they may already hold, a membership that already bundles the service) and
+  put that option first, clearly marked as "if you already have X, this is
+  included at no extra cost." Never push a new subscription past a free
+  path the customer might already have — the point of this tool is to help
+  someone spend less, not more.
+- **Effort, as an internal sort order only — never a label shown to the
+  customer.** Rank each entry `low` (they likely already have the
+  account/card; this is just enrolling in or redeeming an existing benefit),
+  `medium` (a new, standalone subscription/membership — no need to switch
+  anything they already use), or `high` (requires switching carriers/ISPs,
+  opening a new account, or a new phone line) so you can order results
+  easiest-first (see Step 4) and so `deal_log.py --effort` (Step 5) has a
+  value to store for the dashboard's sort control. Do not print "Effort:
+  low/medium/high" or any equivalent phrasing in the answer itself —
+  customers don't need the internal label, only the ordering it produces.
+  If a deal's effort genuinely depends on what the customer already has
+  (e.g. a credit-card credit assumes they hold the card), that dependency
+  belongs in the conditions text (Step 4), not as a hidden assumption
+  behind a single label.
 - **Value, only when the source states a clean number** — `monthly-value`
   for recurring savings/worth, `bonus-value` for one-time cash/gift-card
   amounts. Skip both rather than back into a number by doing math on a
@@ -119,18 +146,44 @@ selling anything. This is a deliberate design choice; keep it that way.
 
 ## Step 4 — Present results
 
-Table: Provider | Deal | Effort | Conditions | Link. Group by category,
-skipping empty ones. If the user mentioned what they already have (a
-carrier, a card, a membership), lead with anything that stacks on top of it.
+Table: **Provider | Deal | Conditions | Link.** No Effort column — effort
+only determines the order rows appear in (easiest/already-have-it first,
+then new standalone subscriptions, then anything requiring a switch), it is
+never printed as its own field. Group by category, skipping empty ones. If
+the user mentioned what they already have (a carrier, a card, a
+membership), or if a free/already-included path exists (see Step 3), lead
+with that before any paid option.
+
+**Conditions holds only genuine eligibility or requirement facts the source
+stated** — region restriction ("US only"), age minimum, a required plan
+tier, "new customers only," enrollment steps. It is not a place to restate
+the deal's effort level in prose — don't write things like "standalone, no
+switching needed"; that's effort information in different words, and effort
+isn't shown to the customer at all (see Step 3). If a condition genuinely
+has nothing to add beyond the region, just say the region.
+
+When the user asked about a specific thing they want to watch/use/get
+(rather than a broad "check for deals"), answer directly and plainly
+whether a current way to get it exists, and lead with that answer — don't
+preface it with what you did or didn't check (see Step 2.5); that's the
+answer they asked for, not a scope report.
 
 Close with one line: promo terms change and rotate (especially cash-back
-amounts), so confirm the current details on the linked page before acting —
-and, for a broad run, a one-line note on what was actually covered (e.g.
-"checked streaming, carrier/ISP switch bonuses, and productivity bundles;
-didn't get to credit-card portals this round") so the user knows the scope,
-not just the results.
+amounts), so confirm the current details on the linked page before acting.
+For a broad, unscoped run only, also add a one-line note on what was
+actually covered (e.g. "checked streaming, carrier/ISP switch bonuses, and
+productivity bundles; didn't get to credit-card portals this round") —
+skip this note for a scoped, specific request (see Step 2.5).
 
 ## Step 5 — Log it so tomorrow's run only shows what's new
+
+`deals_log.json` is **not a price cache and is never a source for an
+answer.** Every number in every response, including a second run on the
+same day, comes from a fresh live search performed in that run (Step 2).
+All this log does is remember which *exact* deals you've already shown the
+user, so that a repeat daily run can say "nothing new since yesterday"
+instead of re-listing the same things — it plays no role in figuring out
+what the current price or offer is.
 
 ```
 python3 scripts/deal_log.py add \
@@ -142,9 +195,11 @@ python3 scripts/deal_log.py add \
   --monthly-value 8.99
 ```
 
-`--link` and `--effort` are required (see Step 2 and Step 3 above).
-`--monthly-value` / `--bonus-value` are optional — only pass them when the
-source gave a clean number. Then show what's new:
+`--link` and `--effort` are required (see Step 2 and Step 3 above) even
+though neither is shown to the customer directly — `--link` becomes the
+clickable CTA, `--effort` only drives sort order and the dashboard's sort
+control. `--monthly-value` / `--bonus-value` are optional — only pass them
+when the source gave a clean number. Then show what's new:
 
 ```
 python3 scripts/deal_log.py new-since-last-run
@@ -157,7 +212,8 @@ say so.
 
 - No live account access — it can't see what the user already has. If they
   tell you their carrier, card, or memberships, prioritize what stacks with
-  those.
+  those, and always check for a free/already-included path before a paid
+  one (Step 3).
 - Region matters (most sources are US-centric); ask if the user is
   elsewhere and results look off.
 - If the user pushes back that results look incomplete or hard to trust,
