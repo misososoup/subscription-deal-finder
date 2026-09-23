@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subscription Deal Finder</title>
+<style>
+  :root {
+    --bg: #f7f7f8;
+    --surface: #ffffff;
+    --border: #e2e2e6;
+    --text: #1a1a1e;
+    --text-muted: #6b6b76;
+    --accent: #4f46e5;
+    --accent-soft: #eef0ff;
+    --streaming: #0ea5a5;
+    --carrier: #d97706;
+    --membership: #2563eb;
+    --productivity: #059669;
+    --creditcard: #db2777;
+    --stacking: #7c3aed;
+    --radius: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #16161a;
+      --surface: #1f1f24;
+      --border: #302f37;
+      --text: #f0f0f2;
+      --text-muted: #a0a0aa;
+      --accent: #818cf8;
+      --accent-soft: #26264a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16161a;
+    --surface: #1f1f24;
+    --border: #302f37;
+    --text: #f0f0f2;
+    --text-muted: #a0a0aa;
+    --accent: #818cf8;
+    --accent-soft: #26264a;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 16px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  header { padding: 24px 0 16px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  .subtitle { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
+  .meta { color: var(--text-muted); font-size: 0.82rem; margin-top: 10px; }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 18px 0;
+  }
+  input[type="search"] {
+    flex: 1 1 220px;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+  input[type="search"]:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+  .chip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .chip[aria-pressed="true"] {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .cards { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .provider { font-weight: 700; font-size: 1.02rem; }
+  .badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .badge.streaming    { background: color-mix(in srgb, var(--streaming) 18%, transparent); color: var(--streaming); }
+  .badge.carrier      { background: color-mix(in srgb, var(--carrier) 18%, transparent); color: var(--carrier); }
+  .badge.membership   { background: color-mix(in srgb, var(--membership) 18%, transparent); color: var(--membership); }
+  .badge.productivity { background: color-mix(in srgb, var(--productivity) 18%, transparent); color: var(--productivity); }
+  .badge.creditcard   { background: color-mix(in srgb, var(--creditcard) 18%, transparent); color: var(--creditcard); }
+  .badge.stacking     { background: color-mix(in srgb, var(--stacking) 18%, transparent); color: var(--stacking); }
+
+  .deal-text { margin: 8px 0 6px; font-size: 0.95rem; }
+  .details {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3px 8px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+  .details dt { font-weight: 600; }
+  .details dd { margin: 0; }
+  .details a { color: var(--accent); text-decoration: none; word-break: break-all; }
+  .details a:hover { text-decoration: underline; }
+
+  .new-pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: var(--accent);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+
+  .empty {
+    text-align: center;
+    padding: 48px 16px;
+    color: var(--text-muted);
+  }
+  .empty code {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+  }
+
+  footer {
+    margin-top: 32px;
+    padding: 16px 0 32px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  footer a { color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Subscription Deal Finder</h1>
+    <p class="subtitle">Current streaming, carrier, membership &amp; card-linked bundle discounts, logged run over run.</p>
+    <p class="meta" id="meta"></p>
+  </header>
+
+  <div class="controls">
+    <input type="search" id="search" placeholder="Search provider or deal…" aria-label="Search deals">
+    <div class="chip" role="button" tabindex="0" data-cat="all" aria-pressed="true">All</div>
+    <div class="chip" role="button" tabindex="0" data-cat="streaming" aria-pressed="false">Streaming</div>
+    <div class="chip" role="button" tabindex="0" data-cat="carrier" aria-pressed="false">Carrier</div>
+    <div class="chip" role="button" tabindex="0" data-cat="membership" aria-pressed="false">Membership</div>
+    <div class="chip" role="button" tabindex="0" data-cat="productivity" aria-pressed="false">Productivity</div>
+    <div class="chip" role="button" tabindex="0" data-cat="creditcard" aria-pressed="false">Credit Card</div>
+    <div class="chip" role="button" tabindex="0" data-cat="stacking" aria-pressed="false">Stacking</div>
+  </div>
+
+  <div class="cards" id="cards"></div>
+  <div class="empty" id="empty" hidden>
+    No deals logged yet. Run the <code>subscription-deal-finder</code> skill in Claude (or your own copy of it),
+    then log what it finds with <code>python3 scripts/deal_log.py add …</code> and push the updated
+    <code>deals_log.json</code> — it'll show up here automatically.
+  </div>
+
+  <footer>
+    Data from <code>deals_log.json</code> in this repo · terms change, verify on the provider's site before you sign up ·
+    <a href="https://github.com/misososoup/subscription-deal-finder">source</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  const cardsEl = document.getElementById('cards');
+  const emptyEl = document.getElementById('empty');
+  const metaEl = document.getElementById('meta');
+  const searchEl = document.getElementById('search');
+  const chips = Array.from(document.querySelectorAll('.chip'));
+
+  let allDeals = [];
+  let lastRun = null;
+  let activeCat = 'all';
+  let query = '';
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function render() {
+    const q = query.trim().toLowerCase();
+    const filtered = allDeals.filter(d => {
+      if (activeCat !== 'all' && d.category !== activeCat) return false;
+      if (!q) return true;
+      return (d.provider + ' ' + d.deal + ' ' + (d.conditions || ''))
+        .toLowerCase()
+        .includes(q);
+    });
+
+    filtered.sort((a, b) => {
+      if (a.last_seen !== b.last_seen) return a.last_seen < b.last_seen ? 1 : -1;
+      return a.provider.localeCompare(b.provider);
+    });
+
+    cardsEl.innerHTML = '';
+    emptyEl.hidden = filtered.length > 0 || allDeals.length > 0;
+    if (allDeals.length === 0) { emptyEl.hidden = false; return; }
+
+    if (filtered.length === 0) {
+      cardsEl.innerHTML = '<div class="empty">No deals match that search/filter.</div>';
+      return;
+    }
+
+    for (const d of filtered) {
+      const isNew = lastRun && d.first_seen === lastRun;
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-top">
+          <span class="provider">${escapeHtml(d.provider)} ${isNew ? '<span class="new-pill">NEW</span>' : ''}</span>
+          <span class="badge ${escapeHtml(d.category)}">${escapeHtml(d.category)}</span>
+        </div>
+        <p class="deal-text">${escapeHtml(d.deal)}</p>
+        <dl class="details">
+          ${d.conditions ? `<dt>Conditions</dt><dd>${escapeHtml(d.conditions)}</dd>` : ''}
+          ${d.expires ? `<dt>Expires</dt><dd>${escapeHtml(d.expires)}</dd>` : ''}
+          ${d.source ? `<dt>Source</dt><dd><a href="${escapeHtml(d.source)}" target="_blank" rel="noopener">${escapeHtml(d.source)}</a></dd>` : ''}
+          <dt>First / last seen</dt><dd>${escapeHtml(d.first_seen)} → ${escapeHtml(d.last_seen)}</dd>
+        </dl>
+      `;
+      cardsEl.appendChild(card);
+    }
+  }
+
+  chips.forEach(chip => {
+    const activate = () => {
+      chips.forEach(c => c.setAttribute('aria-pressed', 'false'));
+      chip.setAttribute('aria-pressed', 'true');
+      activeCat = chip.dataset.cat;
+      render();
+    };
+    chip.addEventListener('click', activate);
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+  });
+
+  searchEl.addEventListener('input', e => {
+    query = e.target.value;
+    render();
+  });
+
+  fetch('deals_log.json', { cache: 'no-store' })
+    .then(r => r.json())
+    .then(data => {
+      allDeals = Object.values(data.deals || {});
+      const runDates = data.run_dates || [];
+      lastRun = runDates.length ? runDates[runDates.length - 1] : null;
+      metaEl.textContent = allDeals.length
+        ? `${allDeals.length} deal${allDeals.length === 1 ? '' : 's'} tracked · last run ${lastRun || 'unknown'}`
+        : 'No runs logged yet.';
+      render();
+    })
+    .catch(() => {
+      metaEl.textContent = 'Could not load deals_log.json.';
+      emptyEl.hidden = false;
+    });
+})();
+</script>
+</body>
+</html>

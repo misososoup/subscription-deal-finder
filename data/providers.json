@@ -1,24 +1,35 @@
 {
   "_comment": "Reference list only — a starting point for what to search, NOT current prices or offers. Always verify live (see SKILL.md Step 2). Update this file occasionally as new providers/bundle types emerge.",
-  "streaming": [
+  "streaming_video": [
     { "name": "Netflix", "site": "netflix.com" },
     { "name": "Max (HBO Max)", "site": "max.com" },
     { "name": "Disney+", "site": "disneyplus.com" },
     { "name": "Hulu", "site": "hulu.com" },
+    { "name": "ESPN (standalone app)", "site": "espn.com" },
     { "name": "ESPN+", "site": "espn.com/espnplus" },
     { "name": "Paramount+", "site": "paramountplus.com" },
     { "name": "Peacock", "site": "peacocktv.com" },
     { "name": "Apple TV+", "site": "tv.apple.com" },
     { "name": "Amazon Prime Video", "site": "amazon.com/primevideo" },
+    { "name": "Starz", "site": "starz.com" },
+    { "name": "AMC+", "site": "amcplus.com" },
+    { "name": "MGM+", "site": "mgmplus.com" },
+    { "name": "Crunchyroll", "site": "crunchyroll.com" }
+  ],
+  "streaming_audio": [
     { "name": "Spotify", "site": "spotify.com" },
-    { "name": "YouTube Premium / Music", "site": "youtube.com/premium" },
-    { "name": "Audible", "site": "audible.com" }
+    { "name": "Apple Music", "site": "music.apple.com" },
+    { "name": "YouTube Music / Premium", "site": "youtube.com/premium" },
+    { "name": "Amazon Music Unlimited", "site": "amazon.com/music" },
+    { "name": "Audible", "site": "audible.com" },
+    { "name": "Tidal", "site": "tidal.com" },
+    { "name": "Pandora", "site": "pandora.com" }
   ],
   "mobile_carriers": [
     {
       "name": "T-Mobile",
       "site": "t-mobile.com",
-      "known_bundle_pattern": "Historically bundles streaming perks (e.g. Netflix, Apple TV+, MLB.TV) into higher-tier unlimited plans. Verify current plan tier and included perk live."
+      "known_bundle_pattern": "Historically bundles streaming perks (e.g. Netflix, Apple TV+, MLB.TV) into higher-tier unlimited plans. T-Mobile Tuesdays also gives weekly one-off freebies/discounts app-wide. Verify current plan tier and included perk live."
     },
     {
       "name": "Verizon",
@@ -28,15 +39,107 @@
     {
       "name": "AT&T",
       "site": "att.com",
-      "known_bundle_pattern": "Has periodically included streaming credits/bundles (e.g. HBO Max in the past) on unlimited plans, and DIRECTV STREAM bundle promos. Verify current offer live — this has changed multiple times."
+      "known_bundle_pattern": "Has periodically included streaming credits/bundles (e.g. HBO Max in the past) on unlimited plans, and DIRECTV STREAM bundle promos. Verify current offer live — this has changed multiple times and may currently be discontinued."
+    },
+    {
+      "name": "Google Fi",
+      "site": "fi.google.com",
+      "known_bundle_pattern": "Has periodically bundled YouTube Premium/Music or Google One storage with certain plans. Verify live."
+    },
+    {
+      "name": "Xfinity Mobile / Comcast",
+      "site": "xfinity.com/mobile",
+      "known_bundle_pattern": "Comcast has bundled Peacock (often free with Xfinity internet/TV packages) and occasionally other streaming perks. Verify live."
+    },
+    {
+      "name": "Spectrum Mobile / Charter",
+      "site": "spectrum.com/mobile",
+      "known_bundle_pattern": "Charter/Spectrum internet plans have occasionally included a free streaming perk (e.g. Disney+ or Paramount+ for a promo period). Verify live."
+    }
+  ],
+  "membership_bundles": [
+    {
+      "name": "Amazon Prime",
+      "site": "amazon.com/prime",
+      "known_bundle_pattern": "Bundles free/fast shipping with Prime Video, Amazon Music, Prime Gaming, Prime Reading, and periodic Whole Foods/Grubhub discounts. One membership, many perks — worth checking as its own bundle, not just for Prime Video."
+    },
+    {
+      "name": "Walmart+",
+      "site": "walmart.com/plus",
+      "known_bundle_pattern": "Has included Paramount+ as part of the membership in addition to free shipping and gas discounts. Verify current inclusion live — bundled service has changed before."
+    },
+    {
+      "name": "Costco Membership",
+      "site": "costco.com",
+      "known_bundle_pattern": "Executive membership tier adds 2% reward on purchases, plus access to Costco Travel and discounted gift cards for streaming/gift subscriptions sold in warehouses. Not a streaming bundle itself, but a common 'daily life' membership worth checking for current promos."
+    },
+    {
+      "name": "Sam's Club Membership",
+      "site": "samsclub.com",
+      "known_bundle_pattern": "Similar to Costco — membership perks plus discounted gift card promos. Verify current offers live."
+    },
+    {
+      "name": "Uber One",
+      "site": "uber.com/one",
+      "known_bundle_pattern": "Bundles discounts/free delivery across Uber Eats and Uber rides into one membership. Sometimes offered free for a period via credit card or carrier promos."
+    },
+    {
+      "name": "DoorDash DashPass",
+      "site": "doordash.com/dashpass",
+      "known_bundle_pattern": "Free delivery/reduced fees on DoorDash; frequently included free with certain credit cards (e.g. Chase) or other memberships (has been bundled with Amazon Prime in some periods). Verify current bundling partners live."
+    },
+    {
+      "name": "Instacart+",
+      "site": "instacart.com",
+      "known_bundle_pattern": "Free delivery membership; has been bundled with some credit cards and occasionally with Peacock. Verify live."
+    }
+  ],
+  "productivity_bundles": [
+    {
+      "name": "Apple One",
+      "site": "apple.com/apple-one",
+      "known_bundle_pattern": "Bundles Apple Music, Apple TV+, Apple Arcade, iCloud+ storage, and (on higher tiers) News+ and Fitness+ into one subscription at a discount vs buying separately. Individual/Family/Premier tiers — verify current pricing live."
+    },
+    {
+      "name": "Google One",
+      "site": "one.google.com",
+      "known_bundle_pattern": "Bundles cloud storage with a VPN (on some tiers) and Google AI Pro features; family sharing included on paid tiers. Verify current tier pricing and inclusions live."
+    },
+    {
+      "name": "Microsoft 365 Family",
+      "site": "microsoft.com/microsoft-365",
+      "known_bundle_pattern": "Bundles Office apps with OneDrive storage for up to 6 people; has occasionally included Xbox Game Pass promos. Verify live."
+    }
+  ],
+  "credit_card_bundles": [
+    {
+      "name": "Amex Platinum",
+      "site": "americanexpress.com",
+      "known_bundle_pattern": "Statement credits toward Walmart+, Uber Cash (covers Uber One in part), a 'Disney Bundle' streaming credit, CLEAR Plus, and other partner subscriptions. Terms/partners change often — verify current benefit list live."
+    },
+    {
+      "name": "Chase Sapphire Reserve / Preferred",
+      "site": "chase.com",
+      "known_bundle_pattern": "Has included DashPass (DoorDash) membership and Lyft/Peloton credits on some cards. Verify current card-specific benefits live — varies by exact card product."
+    },
+    {
+      "name": "Capital One Venture X",
+      "site": "capitalone.com",
+      "known_bundle_pattern": "Travel-focused credits/perks; occasionally includes streaming or delivery statement credits in promotions. Verify live."
+    },
+    {
+      "name": "Amex / Chase Offers portals",
+      "site": "americanexpress.com/offers, chase.com (Chase Offers)",
+      "known_bundle_pattern": "Personalized, account-specific statement-credit offers on streaming and other subscriptions. Can't be searched generically — the user needs to check their own card's offers portal."
     }
   ],
   "stacking_categories": [
-    "Student discounts (Spotify Premium Student often bundles Hulu; Amazon Prime Student)",
-    "Family/duo plan splitting for Spotify, YouTube Premium, Apple One",
-    "Credit card offer portals (Amex Offers, Chase Offers) for statement credits on streaming",
+    "Student discounts (Spotify Premium Student often bundles Hulu; Amazon Prime Student; Apple Music Student often bundles Apple TV+)",
+    "Family/duo plan splitting for Spotify, YouTube Premium, Apple One, Amazon Prime, Microsoft 365 Family",
+    "Credit card offer portals (Amex Offers, Chase Offers) for statement credits on streaming/delivery/retail subscriptions",
     "Annual vs monthly billing discounts on individual services",
     "Discounted gift cards at warehouse clubs (Costco, Sam's Club) for streaming/gift subscriptions",
-    "Apple One / Google One style first-party service bundles"
+    "Carrier weekly perk programs (e.g. T-Mobile Tuesdays) stacking with a carrier's included streaming perk",
+    "A retail/delivery membership (Walmart+, Amazon Prime) that already includes a streaming service, avoiding a separate subscription"
   ]
 }

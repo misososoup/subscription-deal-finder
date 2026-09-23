@@ -1,12 +1,14 @@
 ---
 name: subscription-deal-finder
-description: Finds current subscription discounts, bundles, and promo stacking opportunities across streaming (Netflix, Max, Disney+, Hulu, Spotify, etc.) and mobile carriers (T-Mobile, Verizon, AT&T). Use when the user asks to check for subscription deals, streaming bundles, carrier perks, or wants a daily/periodic deals digest.
+description: Finds current subscription discounts, bundles, and promo stacking opportunities across streaming (Netflix, Max, Disney+, Hulu, Spotify, etc.), mobile carriers (T-Mobile, Verizon, AT&T), and everyday membership/productivity/credit-card bundles (Amazon Prime, Walmart+, Costco, Apple One, Google One, Amex/Chase card perks). Use when the user asks to check for subscription deals, streaming bundles, carrier perks, or wants a daily/periodic deals digest.
 ---
 
 # Subscription Deal Finder
 
-Finds current, real, verifiable discounts and bundles across streaming services
-and mobile carriers, then logs them so repeat runs only surface what's *new*
+Finds current, real, verifiable discounts and bundles — not just streaming, but
+any recurring "daily life" subscription people actually stack: mobile carrier
+perks, retail/delivery memberships, productivity suites, and credit-card-linked
+subscription credits — then logs them so repeat runs only surface what's *new*
 since last time.
 
 ## When to use this skill
@@ -17,23 +19,49 @@ deals check", or a scheduled daily digest.
 
 ## Step 1 — Know what to search for
 
-Read `data/providers.json` in this skill's folder for the current list of
-providers and known bundle patterns to check. It's a starting reference, not a
-source of truth — prices and promos change constantly, so never state a price
-or offer from that file as current without verifying it live in Step 2.
+Read `data/providers.json` in this skill's folder for the current checklist of
+providers and known bundle patterns, organized by `streaming_video`,
+`streaming_audio`, `mobile_carriers`, `membership_bundles`,
+`productivity_bundles`, `credit_card_bundles`, and `stacking_categories`.
+It's a starting reference, not a source of truth — prices and promos change
+constantly, so never state a price or offer from that file as current without
+verifying it live in Step 2.
 
-Categories to cover every run, unless the user narrows the scope:
+Categories to cover every run, unless the user narrows the scope. Use the
+category taxonomy below consistently — it matches `deal_log.py`'s
+`--category` choices and the web dashboard's filter chips:
 
-- **Streaming**: Netflix, Max (HBO Max), Disney+, Hulu, ESPN+, Paramount+,
-  Peacock, Apple TV+, Amazon Prime Video, Spotify, YouTube Premium/Music,
-  Audible.
-- **Mobile carrier perks/bundles**: T-Mobile (e.g. "Netflix on Us", Apple TV+,
-  MLB.TV included on certain plans), Verizon (+play, myPlan perks, Disney
-  Bundle), AT&T (streaming bundles on unlimited plans).
-- **Cross-provider stacking**: student discounts (Spotify + Hulu, Amazon Prime
-  Student), family/duo plan splitting, credit card portal offers (e.g. Amex
-  Offers, Chase Offers on streaming), annual vs. monthly billing discounts,
-  retailer gift-card promos (e.g. discounted gift cards at Costco/Sam's Club).
+- **`streaming`** — video: Netflix, Max (HBO Max), Disney+, Hulu, ESPN
+  (the standalone app, separate from ESPN+), ESPN+, Paramount+, Peacock,
+  Apple TV+, Amazon Prime Video, Starz, AMC+, MGM+, Crunchyroll. Audio:
+  Spotify, Apple Music, YouTube Music/Premium, Amazon Music Unlimited,
+  Audible, Tidal, Pandora.
+- **`carrier`** — mobile/ISP bundled perks: T-Mobile (e.g. "Netflix on Us",
+  Apple TV+, MLB.TV, T-Mobile Tuesdays), Verizon (+play, myPlan perks,
+  Disney Bundle), AT&T, Google Fi, Xfinity Mobile/Comcast (often bundles
+  Peacock), Spectrum Mobile/Charter.
+- **`membership`** — retail/delivery membership programs that bundle
+  several perks into one subscription: Amazon Prime (shipping + video +
+  music + more, not just Prime Video), Walmart+ (has included Paramount+),
+  Costco/Sam's Club (executive tiers, discounted gift cards), Uber One,
+  DoorDash DashPass, Instacart+.
+- **`productivity`** — cloud/productivity bundles: Apple One (Music + TV+ +
+  Arcade + iCloud+, higher tiers add News+/Fitness+), Google One (storage +
+  VPN/AI on paid tiers), Microsoft 365 Family.
+- **`creditcard`** — subscription credits/perks tied to a credit card: Amex
+  Platinum (Walmart+, Uber Cash, Disney Bundle credit, CLEAR Plus), Chase
+  Sapphire Reserve/Preferred (DashPass, Lyft/Peloton credits on some
+  products), Capital One Venture X. Card-specific benefits vary by exact
+  product and change often — verify against the card issuer's current
+  benefits page, not a generic card-name search. Personalized offer portals
+  (Amex Offers, Chase Offers) can't be searched generically — tell the user
+  to check their own account instead of guessing what's in it.
+- **`stacking`** — combinations across the above: student discounts
+  (Spotify + Hulu, Amazon Prime Student, Apple Music Student usually
+  bundling Apple TV+), family/duo plan splitting, annual vs. monthly
+  billing discounts, a membership that already includes a streaming
+  service (so a separate subscription would be redundant), a carrier's
+  weekly perk program stacking with its included streaming perk.
 
 ## Step 2 — Search live, don't rely on training data
 
@@ -56,10 +84,12 @@ knowledge cutoff for anything recent. For each provider/category:
 ## Step 3 — Compile the findings
 
 Present results as a table: Provider | Deal | Eligibility/conditions |
-Expires | Source link. Group by category (Streaming / Carrier / Stacking).
-Call out anything that looks like it stacks with something the user already
-mentioned having (e.g. if they've said they're on T-Mobile, highlight
-carrier-included streaming perks first).
+Expires | Source link. Group by category (Streaming / Carrier / Membership /
+Productivity / Credit Card / Stacking) — skip empty categories rather than
+padding the table. Call out anything that looks like it stacks with something
+the user already mentioned having (e.g. if they've said they're on T-Mobile,
+highlight carrier-included streaming perks first; if they mentioned an Amex
+Platinum, check its current benefit list before generic card searches).
 
 Always close with a one-line reminder that promo terms change and the user
 should confirm final pricing/eligibility on the provider's site before

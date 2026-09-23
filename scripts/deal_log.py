@@ -8,8 +8,16 @@ date bumped. `new-since-last-run` then shows only what's new since the
 previous logging session — which is what turns this into a useful daily
 digest instead of the same list every day.
 
+Categories (kept in sync with SKILL.md and the web dashboard's filter chips):
+  streaming    — video/audio streaming services
+  carrier      — mobile/ISP bundled perks
+  membership   — retail/delivery membership programs (Prime, Walmart+, Costco, Uber One, DashPass...)
+  productivity — cloud/productivity bundles (Apple One, Google One, Microsoft 365...)
+  creditcard   — subscription credits/perks tied to a credit card
+  stacking     — combinations across the above categories
+
 Usage:
-  deal_log.py add --provider NAME --category {streaming,carrier,stacking} \
+  deal_log.py add --provider NAME --category CATEGORY \
       --deal TEXT [--conditions TEXT] [--expires TEXT] [--source URL]
   deal_log.py new-since-last-run [--category CATEGORY]
   deal_log.py list [--category CATEGORY]
@@ -21,6 +29,8 @@ from datetime import date
 from pathlib import Path
 
 LOG_PATH = Path(__file__).resolve().parent.parent / "deals_log.json"
+
+CATEGORIES = ["streaming", "carrier", "membership", "productivity", "creditcard", "stacking"]
 
 
 def _load():
@@ -123,7 +133,7 @@ def main():
 
     p_add = sub.add_parser("add", help="Log a deal found in this run")
     p_add.add_argument("--provider", required=True)
-    p_add.add_argument("--category", required=True, choices=["streaming", "carrier", "stacking"])
+    p_add.add_argument("--category", required=True, choices=CATEGORIES)
     p_add.add_argument("--deal", required=True)
     p_add.add_argument("--conditions")
     p_add.add_argument("--expires")
@@ -131,11 +141,11 @@ def main():
     p_add.set_defaults(func=cmd_add)
 
     p_new = sub.add_parser("new-since-last-run", help="Show deals first seen on the most recent run")
-    p_new.add_argument("--category", choices=["streaming", "carrier", "stacking"])
+    p_new.add_argument("--category", choices=CATEGORIES)
     p_new.set_defaults(func=cmd_new_since_last_run)
 
     p_list = sub.add_parser("list", help="List all logged deals")
-    p_list.add_argument("--category", choices=["streaming", "carrier", "stacking"])
+    p_list.add_argument("--category", choices=CATEGORIES)
     p_list.set_defaults(func=cmd_list)
 
     args = parser.parse_args()
