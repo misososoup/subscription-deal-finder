@@ -1,94 +1,186 @@
 {
   "deals": {
-    "033583197a2e": {
+    "1543c2defedb": {
+      "bonus_value_usd": null,
       "category": "streaming",
-      "conditions": "Unlimited tier includes all ESPN cable channels + ESPN+ content; Select tier is the old ESPN+ programming",
-      "deal": "Unlimited plan $29.99/mo or $299.99/yr; ESPN+ rebranded as 'ESPN Select' at $11.99/mo",
+      "conditions": "US only, 18+",
+      "deal": "Two tiers: Select bundle is $21.99/mo for all three with ESPN+-only sports content (save $15.98/mo vs. $37.97 separately). Unlimited bundle is $35.99/mo with full ESPN TV + NFL Network (or $44.99/mo ad-free on Hulu/Disney+). Pick based on the same Select-vs-Unlimited sports question as standalone ESPN, above.",
+      "effort": "medium",
       "expires": "ongoing",
       "first_seen": "2026-09-23",
       "last_seen": "2026-09-23",
-      "provider": "ESPN (standalone)",
-      "source": "https://www.tomsguide.com/entertainment/sports/espn-standalone-app-is-coming-this-fall-and-it-aint-cheap"
+      "link": "https://www.hulu.com/disney-hulu-espn-unlimited-bundle",
+      "link_domain": "hulu.com",
+      "monthly_value_usd": 15.98,
+      "provider": "Disney+, Hulu & ESPN Bundle"
     },
-    "1ea0a05fd1ec": {
+    "23e458520bc6": {
+      "bonus_value_usd": null,
+      "category": "streaming",
+      "conditions": "Requires verified student status via SheerID; can't be combined with other Hulu plans or add-ons",
+      "deal": "Premium plus Hulu (with ads) for $6.99/mo total \u2014 student-only bundle",
+      "effort": "medium",
+      "expires": "ongoing",
+      "first_seen": "2026-09-23",
+      "last_seen": "2026-09-23",
+      "link": "https://www.spotify.com/us/student/",
+      "link_domain": "spotify.com",
+      "monthly_value_usd": null,
+      "provider": "Spotify"
+    },
+    "270b515e9794": {
+      "bonus_value_usd": null,
+      "category": "streaming",
+      "conditions": "US only, 18+, monthly billing only, no free trial, billed directly through Disney+/Hulu/Max",
+      "deal": "All three for $19.99/mo with ads (save $14.98/mo vs. $34.97 separately) or $32.99/mo ad-free (save $23.48/mo vs. $56.47 separately). Max is the service formerly called HBO Max.",
+      "effort": "medium",
+      "expires": "ongoing",
+      "first_seen": "2026-09-23",
+      "last_seen": "2026-09-23",
+      "link": "https://www.hulu.com/disney-hulu-hbomax-bundle",
+      "link_domain": "hulu.com",
+      "monthly_value_usd": 14.98,
+      "provider": "Disney+, Hulu & Max Bundle"
+    },
+    "2f6a6ff62c0f": {
+      "bonus_value_usd": null,
       "category": "productivity",
-      "conditions": "Family/Premier shareable with up to 5; free trial month for services you don't already use; 3 months free with new Apple device",
-      "deal": "Individual $21.95/mo, Family $27.95/mo, Premier $39.95/mo (bundles iCloud+, Apple TV+, Music, Arcade; Premier adds Fitness+ and News+)",
+      "conditions": "Free trial month for any service you don't already have; new Apple device purchasers can get 3 months free",
+      "deal": "Individual $21.95/mo (saves $13/mo), Family $27.95/mo (saves $17/mo, shareable with 5), or Premier $39.95/mo (saves $35/mo, adds Fitness+ and News+) \u2014 all bundle iCloud+ storage, Apple TV+, Apple Music, and Apple Arcade",
+      "effort": "medium",
       "expires": "ongoing",
       "first_seen": "2026-09-23",
       "last_seen": "2026-09-23",
-      "provider": "Apple One",
-      "source": "https://www.apple.com/apple-one/"
+      "link": "https://www.apple.com/apple-one/",
+      "link_domain": "apple.com",
+      "monthly_value_usd": null,
+      "provider": "Apple One"
     },
-    "2b856442d256": {
+    "4197279e52f6": {
+      "bonus_value_usd": null,
       "category": "carrier",
-      "conditions": "Requires Simplicity, Unlimited Ultimate/Plus/Welcome, or select home internet plan; activate within 90 days",
-      "deal": "Netflix & Max (w/ ads) perk for $13/mo (saves $6.98 vs separate)",
+      "conditions": "Requires Xfinity Internet or TV service; you choose which apps go in your bundle",
+      "deal": "StreamSaver: pick a streaming bundle (Netflix, Max, Disney+, Hulu, Peacock, or Apple TV+) starting at $18/mo, saving over 25% vs. subscribing separately",
+      "effort": "high",
       "expires": "ongoing",
       "first_seen": "2026-09-23",
       "last_seen": "2026-09-23",
-      "provider": "Verizon",
-      "source": "https://www.verizon.com/support/netflix-max-perk-faqs/"
+      "link": "https://www.xfinity.com/learn/deals",
+      "link_domain": "xfinity.com",
+      "monthly_value_usd": null,
+      "provider": "Xfinity (Comcast)"
     },
-    "42f0c30a1065": {
-      "category": "streaming",
-      "conditions": "Students only, verified via SheerID; can't combine with other Hulu plans",
-      "deal": "Premium + Hulu (w/ ads) student bundle for $6.99/mo",
-      "expires": "ongoing",
-      "first_seen": "2026-09-23",
-      "last_seen": "2026-09-23",
-      "provider": "Spotify",
-      "source": "https://support.spotify.com/us/article/hulu-premium-bundle/"
-    },
-    "8ff74d2bac67": {
+    "491d18257a15": {
+      "bonus_value_usd": null,
       "category": "membership",
-      "conditions": "Active Walmart+ required; one service at a time, can switch every 90 days; must cancel existing paid sub first if you have one",
-      "deal": "Free Paramount+ Essential or Peacock Premium (w/ ads) included with membership",
+      "conditions": "Enrolled at a US college/trade school with a .edu email (or SheerID verification), or ages 18-24; personal use only",
+      "deal": "Prime Student: 6 months free, then $7.49/mo or $69/yr \u2014 saves $5.50/mo (or $50/yr) vs. regular Prime at $12.99/mo or $119/yr",
+      "effort": "medium",
       "expires": "ongoing",
       "first_seen": "2026-09-23",
       "last_seen": "2026-09-23",
-      "provider": "Walmart+",
-      "source": "https://www.walmart.com/help/article/walmart-benefits-streaming-services/35624ec8e133496ab647a398a90cf779"
+      "link": "https://www.amazon.com/Amazon-Student",
+      "link_domain": "amazon.com",
+      "monthly_value_usd": 5.5,
+      "provider": "Amazon Prime"
     },
-    "91d720130142": {
-      "category": "streaming",
-      "conditions": "College/trade student with .edu email, or ages 18-24",
-      "deal": "Prime Student: 6 months free, then $7.49/mo or $69/yr",
-      "expires": "ongoing",
-      "first_seen": "2026-09-23",
-      "last_seen": "2026-09-23",
-      "provider": "Amazon",
-      "source": "https://www.amazon.com/Amazon-Student"
-    },
-    "9fdffd4005af": {
-      "category": "creditcard",
-      "conditions": "Enrollment required (once); $25/mo cap, doesn't roll over; must buy direct from provider, not bundled/third-party",
-      "deal": "$300/yr Digital Entertainment Credit ($25/mo) toward Disney+, ESPN+, Hulu, Paramount+, Peacock, NYT, WSJ, or YouTube Premium/TV/Music",
-      "expires": "ongoing",
-      "first_seen": "2026-09-23",
-      "last_seen": "2026-09-23",
-      "provider": "Amex Platinum",
-      "source": "https://awardwallet.com/credit-cards/amex-membership-rewards/amex-platinum-entertainment-credit/"
-    },
-    "b5194e1dfdd4": {
+    "52eefb76bd43": {
+      "bonus_value_usd": 200.0,
       "category": "carrier",
-      "conditions": "Qualifying plan required (e.g. Go5G/Magenta w/ 2+ lines, or Experience More/Beyond, Go5G Plus, Magenta MAX); 1 per account",
-      "deal": "Netflix Standard w/ Ads included free (Netflix on Us)",
-      "expires": "ongoing",
+      "conditions": "New customer, new device purchase, any myPlan unlimited tier including Unlimited Welcome; this is a rotating promo \u2014 confirm the current amount on Verizon's deals page before switching",
+      "deal": "$200 gift card for switching to Verizon with a new smartphone purchase and a new line on myPlan",
+      "effort": "high",
+      "expires": "check site \u2014 rotates",
       "first_seen": "2026-09-23",
       "last_seen": "2026-09-23",
-      "provider": "T-Mobile",
-      "source": "https://www.t-mobile.com/tv-streaming/netflix-on-us"
+      "link": "https://www.verizon.com/deals/",
+      "link_domain": "verizon.com",
+      "monthly_value_usd": null,
+      "provider": "Verizon"
     },
-    "bfb26a2f9f10": {
+    "639a454c84ef": {
+      "bonus_value_usd": null,
       "category": "streaming",
-      "conditions": "US only, 18+, monthly billing only, no free trial",
-      "deal": "Bundle: $19.99/mo w/ ads (~42% off) or $32.99/mo no ads (~41% off)",
+      "conditions": "No Hulu or Disney+ included at this tier \u2014 see the bundled version below if you want those too",
+      "deal": "Two tiers direct from ESPN: Select is $11.99/mo for ESPN+ original content only. Unlimited is $29.99/mo (or $299.99/yr) and adds every ESPN cable channel (ESPN, ESPN2, ESPNU, SEC Network, ACC Network, etc.) plus NFL Network. Pick Select if you only want ESPN+ shows; pick Unlimited if you want to watch live ESPN TV.",
+      "effort": "medium",
       "expires": "ongoing",
       "first_seen": "2026-09-23",
       "last_seen": "2026-09-23",
-      "provider": "Disney+/Hulu/Max",
-      "source": "https://www.hulu.com/disney-hulu-hbomax-bundle"
+      "link": "https://plus.espn.com/",
+      "link_domain": "plus.espn.com",
+      "monthly_value_usd": null,
+      "provider": "ESPN (standalone, no Hulu/Disney+)"
+    },
+    "65ca494de736": {
+      "bonus_value_usd": null,
+      "category": "creditcard",
+      "conditions": "Assumes you already hold the card \u2014 this covers enrolling in/using an existing benefit, not getting the card itself. One-time enrollment required; $25/mo cap doesn't roll over; must buy directly from the provider, not through a bundle or third party",
+      "deal": "Up to $25/mo ($300/yr total) in statement credits toward Disney+, ESPN+, Hulu, Paramount+, Peacock, The New York Times, The Wall Street Journal, or YouTube Premium/Music",
+      "effort": "low",
+      "expires": "ongoing",
+      "first_seen": "2026-09-23",
+      "last_seen": "2026-09-23",
+      "link": "https://global.americanexpress.com/card-benefits/detail/digital-entertainment/platinum",
+      "link_domain": "global.americanexpress.com",
+      "monthly_value_usd": 25.0,
+      "provider": "American Express Platinum Card"
+    },
+    "aef5af7cd690": {
+      "bonus_value_usd": null,
+      "category": "membership",
+      "conditions": "Active Walmart+ required; one streaming service at a time, can switch every 90 days; if you already pay for either service, you must cancel and wait for it to expire before claiming this",
+      "deal": "Membership includes your choice of Paramount+ Essential or Peacock Premium (with ads) at no extra cost, on top of free shipping and fuel discounts",
+      "effort": "medium",
+      "expires": "ongoing",
+      "first_seen": "2026-09-23",
+      "last_seen": "2026-09-23",
+      "link": "https://www.walmart.com/plus",
+      "link_domain": "walmart.com",
+      "monthly_value_usd": null,
+      "provider": "Walmart+"
+    },
+    "b1768a6f926e": {
+      "bonus_value_usd": null,
+      "category": "carrier",
+      "conditions": "Requires a qualifying T-Mobile plan (2+ lines on Go5G/Magenta, or 1+ line on Experience More/Beyond, Go5G Plus, or Magenta MAX); 1 per account; activate via the T-Life app",
+      "deal": "Netflix Standard with Ads included free (\"Netflix on Us\")",
+      "effort": "high",
+      "expires": "ongoing",
+      "first_seen": "2026-09-23",
+      "last_seen": "2026-09-23",
+      "link": "https://www.t-mobile.com/tv-streaming/netflix-on-us",
+      "link_domain": "t-mobile.com",
+      "monthly_value_usd": 8.99,
+      "provider": "T-Mobile"
+    },
+    "c64b954da55b": {
+      "bonus_value_usd": null,
+      "category": "carrier",
+      "conditions": "Requires Simplicity, Unlimited Ultimate/Plus/Welcome, or a select home internet plan; must activate within 90 days",
+      "deal": "Netflix and Max (with ads) bundled for $13/mo, saving $6.98/mo vs. subscribing to each separately",
+      "effort": "high",
+      "expires": "ongoing",
+      "first_seen": "2026-09-23",
+      "last_seen": "2026-09-23",
+      "link": "https://www.verizon.com/support/netflix-max-perk-faqs/",
+      "link_domain": "verizon.com",
+      "monthly_value_usd": 6.98,
+      "provider": "Verizon"
+    },
+    "c8445ef81f21": {
+      "bonus_value_usd": 200.0,
+      "category": "carrier",
+      "conditions": "Student verification required; requires signing up for the Gig WiFi internet plan",
+      "deal": "$200 prepaid Mastercard plus 2 years of free Peacock Premium for students switching to Xfinity Gig WiFi internet",
+      "effort": "high",
+      "expires": "ongoing",
+      "first_seen": "2026-09-23",
+      "last_seen": "2026-09-23",
+      "link": "https://www.xfinity.com/learn/deals",
+      "link_domain": "xfinity.com",
+      "monthly_value_usd": null,
+      "provider": "Xfinity (Comcast)"
     }
   },
   "run_dates": [

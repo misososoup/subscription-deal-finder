@@ -4,21 +4,29 @@ deal_log.py — dedup/diff tracker for the subscription-deal-finder skill.
 
 Each time Claude finds deals, it logs them here. Deals are deduped by
 provider+description, so a deal already known just gets its "last_seen"
-date bumped. `new-since-last-run` then shows only what's new since the
-previous logging session — which is what turns this into a useful daily
-digest instead of the same list every day.
+date bumped (shown to users as "Verified <date>" — it's a freshness signal,
+not a range). `new-since-last-run` shows only what's new since the previous
+logging session.
 
-Categories (kept in sync with SKILL.md and the web dashboard's filter chips):
+Categories (kept in sync with SKILL.md and the web dashboard):
   streaming    — video/audio streaming services
-  carrier      — mobile/ISP bundled perks
+  carrier      — mobile/ISP bundled perks and switch/sign-up bonuses
   membership   — retail/delivery membership programs (Prime, Walmart+, Costco, Uber One, DashPass...)
   productivity — cloud/productivity bundles (Apple One, Google One, Microsoft 365...)
   creditcard   — subscription credits/perks tied to a credit card
   stacking     — combinations across the above categories
 
+Required fields:
+  --link must be the provider's own official domain (netflix.com, t-mobile.com,
+  etc.) — never a blog, review site, or news article. This is the "get this
+  deal" URL shown to users, not just a citation.
+  --effort is low/medium/high — see SKILL.md's rubric for what each means.
+
 Usage:
-  deal_log.py add --provider NAME --category CATEGORY \
-      --deal TEXT [--conditions TEXT] [--expires TEXT] [--source URL]
+  deal_log.py add --provider NAME --category CATEGORY --deal TEXT \
+      --link URL --effort {low,medium,high} \
+      [--conditions TEXT] [--expires TEXT] \
+      [--monthly-value N] [--bonus-value N]
   deal_log.py new-since-last-run [--category CATEGORY]
   deal_log.py list [--category CATEGORY]
 """
@@ -27,10 +35,12 @@ import hashlib
 import json
 from datetime import date
 from pathlib import Path
+from urllib.parse import urlparse
 
 LOG_PATH = Path(__file__).resolve().parent.parent / "deals_log.json"
 
 CATEGORIES = ["streaming", "carrier", "membership", "productivity", "creditcard", "stacking"]
+EFFORTS = ["low", "medium", "high"]
 
 
 def _load():
@@ -51,6 +61,14 @@ def _key(provider, deal):
     return hashlib.sha1(raw.encode()).hexdigest()[:12]
 
 
+def _domain(url):
+    try:
+        host = urlparse(url).netloc.lower()
+        return host[4:] if host.startswith("www.") else host
+    except Exception:
+        return ""
+
+
 def cmd_add(args):
     data = _load()
     today = date.today().isoformat()
@@ -58,30 +76,30 @@ def cmd_add(args):
 
     entry = data["deals"].get(key)
     is_new = entry is None
+    fields = {
+        "provider": args.provider,
+        "category": args.category,
+        "deal": args.deal,
+        "conditions": args.conditions or "",
+        "expires": args.expires or "",
+        "link": args.link,
+        "link_domain": _domain(args.link),
+        "effort": args.effort,
+        "monthly_value_usd": args.monthly_value,
+        "bonus_value_usd": args.bonus_value,
+        "last_seen": today,
+    }
     if is_new:
-        entry = {
-            "provider": args.provider,
-            "category": args.category,
-            "deal": args.deal,
-            "conditions": args.conditions or "",
-            "expires": args.expires or "",
-            "source": args.source or "",
-            "first_seen": today,
-            "last_seen": today,
-        }
+        entry = {**fields, "first_seen": today}
     else:
-        entry["last_seen"] = today
-        entry["category"] = args.category
-        entry["conditions"] = args.conditions or entry.get("conditions", "")
-        entry["expires"] = args.expires or entry.get("expires", "")
-        entry["source"] = args.source or entry.get("source", "")
+        entry.update(fields)
 
     data["deals"][key] = entry
     if not data["run_dates"] or data["run_dates"][-1] != today:
         data["run_dates"].append(today)
     _save(data)
 
-    status = "NEW" if is_new else "seen again"
+    status = "NEW" if is_new else "updated"
     print(f"[{status}] {args.provider}: {args.deal}")
 
 
@@ -103,13 +121,12 @@ def cmd_new_since_last_run(args):
         return
     print(f"New since last run ({last_run}):\n")
     for d in sorted(deals, key=lambda x: (x["category"], x["provider"])):
-        print(f"- [{d['category']}] {d['provider']}: {d['deal']}")
+        print(f"- [{d['category']}/{d['effort']}] {d['provider']}: {d['deal']}")
         if d["conditions"]:
             print(f"    conditions: {d['conditions']}")
         if d["expires"]:
             print(f"    expires: {d['expires']}")
-        if d["source"]:
-            print(f"    source: {d['source']}")
+        print(f"    link: {d['link']}")
 
 
 def cmd_list(args):
@@ -122,8 +139,8 @@ def cmd_list(args):
         return
     for d in sorted(deals, key=lambda x: (x["category"], x["provider"])):
         print(
-            f"- [{d['category']}] {d['provider']}: {d['deal']} "
-            f"(first seen {d['first_seen']}, last seen {d['last_seen']})"
+            f"- [{d['category']}/{d['effort']}] {d['provider']}: {d['deal']} "
+            f"(verified {d['last_seen']})"
         )
 
 
@@ -132,12 +149,17 @@ def main():
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_add = sub.add_parser("add", help="Log a deal found in this run")
-    p_add.add_argument("--provider", required=True)
+    p_add.add_argument("--provider", required=True, help="Full, unambiguous name — no unexplained abbreviations")
     p_add.add_argument("--category", required=True, choices=CATEGORIES)
     p_add.add_argument("--deal", required=True)
+    p_add.add_argument("--link", required=True, help="Official provider-domain URL — never a blog/review site")
+    p_add.add_argument("--effort", required=True, choices=EFFORTS)
     p_add.add_argument("--conditions")
     p_add.add_argument("--expires")
-    p_add.add_argument("--source")
+    p_add.add_argument("--monthly-value", type=float, dest="monthly_value",
+                        help="Recurring monthly value/savings in USD, only if explicitly stated by the source")
+    p_add.add_argument("--bonus-value", type=float, dest="bonus_value",
+                        help="One-time cash/gift-card bonus in USD, only if explicitly stated by the source")
     p_add.set_defaults(func=cmd_add)
 
     p_new = sub.add_parser("new-since-last-run", help="Show deals first seen on the most recent run")

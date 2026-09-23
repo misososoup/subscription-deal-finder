@@ -81,16 +81,26 @@ one person:
 ## Usage
 
 Ask Claude to check for deals. It searches live (see `SKILL.md`), then logs
-what it found:
+what it found. Every entry requires `--link` (the provider's own official
+page — where you'd actually go to get the deal, not just a citation) and
+`--effort` (`low`/`medium`/`high` — see SKILL.md's rubric):
 
 ```bash
 python3 scripts/deal_log.py add \
-  --provider "T-Mobile" --category carrier \
-  --deal "Netflix Standard w/ Ads included on Experience Beyond" \
-  --conditions "Requires Experience Beyond plan, per line" \
+  --provider "T-Mobile" --category carrier --effort high \
+  --deal "Netflix Standard with Ads included free (\"Netflix on Us\")" \
+  --conditions "Requires a qualifying plan; 1 per account" \
   --expires "ongoing" \
-  --source "https://www.t-mobile.com/..."
+  --link "https://www.t-mobile.com/tv-streaming/netflix-on-us" \
+  --monthly-value 8.99
 ```
+
+`--monthly-value` and `--bonus-value` are optional USD numbers — only pass
+them when the source states a clean figure (recurring monthly savings, or a
+one-time cash/gift-card bonus). The dashboard uses these to sort by effort
+or by value, and shows "Verified `<date>` on `<link's domain>`" on every
+card instead of an internal-tracking date range — a quick trust signal that
+the deal was checked against the provider's own site, not a blog.
 
 See everything new since the last time you ran it:
 

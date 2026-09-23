@@ -29,17 +29,17 @@
     {
       "name": "T-Mobile",
       "site": "t-mobile.com",
-      "known_bundle_pattern": "Historically bundles streaming perks (e.g. Netflix, Apple TV+, MLB.TV) into higher-tier unlimited plans. T-Mobile Tuesdays also gives weekly one-off freebies/discounts app-wide. Verify current plan tier and included perk live."
+      "known_bundle_pattern": "Historically bundles streaming perks (e.g. Netflix, Apple TV+, MLB.TV) into higher-tier unlimited plans; also runs T-Mobile Tuesdays weekly freebies. Search separately for any current switch/sign-up cash bonus — carriers usually run that as a distinct promo from the included-perk program. Verify live."
     },
     {
       "name": "Verizon",
       "site": "verizon.com",
-      "known_bundle_pattern": "myPlan perks system lets customers add streaming perks (e.g. Disney Bundle, Netflix/Max) for a flat add-on price or free on top tiers. +play is Verizon's separate bundling storefront for third-party subscriptions. Verify current perk lineup live."
+      "known_bundle_pattern": "myPlan perks system lets customers add streaming perks (e.g. Disney Bundle, Netflix/Max) for a flat add-on price or free on top tiers. Verizon also regularly runs a rotating gift-card bonus for switching with a new line/device — search for that separately, it's not listed on the same page as the streaming perks. Verify both live."
     },
     {
       "name": "AT&T",
       "site": "att.com",
-      "known_bundle_pattern": "Has periodically included streaming credits/bundles (e.g. HBO Max in the past) on unlimited plans, and DIRECTV STREAM bundle promos. Verify current offer live — this has changed multiple times and may currently be discontinued."
+      "known_bundle_pattern": "Has periodically included streaming credits/bundles (e.g. HBO Max in the past) on unlimited plans, and DIRECTV STREAM bundle promos. Verify current offer live — this has changed multiple times and may currently be discontinued. Also check for a separate switch/sign-up cash bonus."
     },
     {
       "name": "Google Fi",
@@ -47,9 +47,9 @@
       "known_bundle_pattern": "Has periodically bundled YouTube Premium/Music or Google One storage with certain plans. Verify live."
     },
     {
-      "name": "Xfinity Mobile / Comcast",
-      "site": "xfinity.com/mobile",
-      "known_bundle_pattern": "Comcast has bundled Peacock (often free with Xfinity internet/TV packages) and occasionally other streaming perks. Verify live."
+      "name": "Xfinity / Comcast",
+      "site": "xfinity.com",
+      "known_bundle_pattern": "Runs a pick-your-own streaming bundle (branded 'StreamSaver' as of late 2026) on top of Internet/TV service, plus separate student and general switch bonuses (gift cards, waived fees) on Xfinity Mobile and Gig WiFi. Check the mobile plan, the home internet plan, and the deals/promos page separately — they don't all live in one place. Verify live."
     },
     {
       "name": "Spectrum Mobile / Charter",

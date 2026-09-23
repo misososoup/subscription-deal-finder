@@ -155,6 +155,32 @@
     color: var(--text-muted);
   }
 
+  .sort-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 14px;
+    font-size: 0.8rem;
+  }
+  .sort-row span.sort-label { color: var(--text-muted); margin-right: 2px; }
+  .sort-btn {
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    cursor: pointer;
+    font: inherit;
+  }
+  .sort-btn[aria-pressed="true"] {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
   .cards { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
   .card {
     background: var(--surface);
@@ -187,6 +213,35 @@
   .badge.stacking     { background: color-mix(in srgb, var(--stacking) 18%, transparent); color: var(--stacking); }
 
   .deal-text { margin: 8px 0 6px; font-size: 0.95rem; }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .effort-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .effort-dots .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--border);
+  }
+  .effort-dots .dot.filled { background: var(--text-muted); }
+  .value-pill {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+  }
+
   .details {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -197,8 +252,25 @@
   }
   .details dt { font-weight: 600; }
   .details dd { margin: 0; }
-  .details a { color: var(--accent); text-decoration: none; word-break: break-all; }
-  .details a:hover { text-decoration: underline; }
+
+  .cta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .verified-note { font-size: 0.76rem; color: var(--text-muted); }
+  .cta-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.86rem;
+    white-space: nowrap;
+  }
+  .cta-link:hover { text-decoration: underline; }
 
   .new-pill {
     font-size: 0.7rem;
@@ -258,6 +330,13 @@
       <button type="button" class="back-link" id="backBtn">&larr; Back to popular picks</button>
       <span class="results-title" id="resultsTitle"></span>
     </div>
+    <div class="sort-row" id="sortRow">
+      <span class="sort-label">Sort:</span>
+      <button type="button" class="sort-btn" data-sort="effort" aria-pressed="true">Least effort first</button>
+      <button type="button" class="sort-btn" data-sort="monthly">Biggest monthly value</button>
+      <button type="button" class="sort-btn" data-sort="bonus">Biggest one-time bonus</button>
+      <button type="button" class="sort-btn" data-sort="newest">Recently verified</button>
+    </div>
     <div class="cards" id="cards"></div>
   </section>
 
@@ -284,10 +363,27 @@
   const resultsSection = document.getElementById('resultsSection');
   const resultsTitle = document.getElementById('resultsTitle');
   const backBtn = document.getElementById('backBtn');
+  const sortRow = document.getElementById('sortRow');
+  const sortBtns = Array.from(sortRow.querySelectorAll('.sort-btn'));
 
   let allDeals = [];
   let lastRun = null;
   let currentFilter = () => true;
+  let currentSort = 'effort';
+
+  const EFFORT_RANK = { low: 0, medium: 1, high: 2 };
+  const EFFORT_LABEL = {
+    low: 'Low effort — you likely already have this account/card',
+    medium: 'Medium effort — a new, separate subscription',
+    high: 'High effort — switching provider or opening a new account/line',
+  };
+
+  const SORTERS = {
+    effort: (a, b) => EFFORT_RANK[a.effort] - EFFORT_RANK[b.effort] || a.provider.localeCompare(b.provider),
+    monthly: (a, b) => (b.monthly_value_usd ?? -1) - (a.monthly_value_usd ?? -1),
+    bonus: (a, b) => (b.bonus_value_usd ?? -1) - (a.bonus_value_usd ?? -1),
+    newest: (a, b) => (a.last_seen < b.last_seen ? 1 : a.last_seen > b.last_seen ? -1 : 0),
+  };
 
   // Curated "popular combinations" — each is a predicate over a deal record.
   // Keyword-based ones (student, stack) stay live-accurate as deals_log.json
@@ -319,6 +415,21 @@
       .replace(/"/g, '&quot;');
   }
 
+  function effortDots(effort) {
+    const rank = EFFORT_RANK[effort] ?? 1;
+    let dots = '';
+    for (let i = 0; i < 3; i++) {
+      dots += `<span class="dot${i <= rank ? ' filled' : ''}"></span>`;
+    }
+    return `<span class="effort-dots" title="${escapeHtml(EFFORT_LABEL[effort] || '')}">${dots}<span>${escapeHtml(effort)} effort</span></span>`;
+  }
+
+  function valuePill(d) {
+    if (d.monthly_value_usd) return `<span class="value-pill">~$${d.monthly_value_usd}/mo value</span>`;
+    if (d.bonus_value_usd) return `<span class="value-pill">$${d.bonus_value_usd} one-time</span>`;
+    return '';
+  }
+
   function dealCard(d) {
     const isNew = lastRun && d.first_seen === lastRun;
     const card = document.createElement('div');
@@ -329,25 +440,30 @@
         <span class="badge ${escapeHtml(d.category)}">${escapeHtml(d.category)}</span>
       </div>
       <p class="deal-text">${escapeHtml(d.deal)}</p>
+      <div class="meta-row">
+        ${effortDots(d.effort)}
+        ${valuePill(d)}
+      </div>
       <dl class="details">
         ${d.conditions ? `<dt>Conditions</dt><dd>${escapeHtml(d.conditions)}</dd>` : ''}
-        ${d.expires ? `<dt>Expires</dt><dd>${escapeHtml(d.expires)}</dd>` : ''}
-        ${d.source ? `<dt>Source</dt><dd><a href="${escapeHtml(d.source)}" target="_blank" rel="noopener">${escapeHtml(d.source)}</a></dd>` : ''}
-        <dt>First / last seen</dt><dd>${escapeHtml(d.first_seen)} → ${escapeHtml(d.last_seen)}</dd>
+        ${d.expires && d.expires !== 'ongoing' ? `<dt>Expires</dt><dd>${escapeHtml(d.expires)}</dd>` : ''}
       </dl>
+      <div class="cta-row">
+        <span class="verified-note">Verified ${escapeHtml(d.last_seen)} on ${escapeHtml(d.link_domain || '')}</span>
+        <a class="cta-link" href="${escapeHtml(d.link)}" target="_blank" rel="noopener">Get this deal &rarr;</a>
+      </div>
     `;
     return card;
   }
 
   function renderResults(title) {
-    const filtered = allDeals.filter(currentFilter).sort((a, b) => {
-      if (a.last_seen !== b.last_seen) return a.last_seen < b.last_seen ? 1 : -1;
-      return a.provider.localeCompare(b.provider);
-    });
+    const filtered = allDeals.filter(currentFilter).sort(SORTERS[currentSort]);
 
     resultsTitle.textContent = title
       ? `${title} · ${filtered.length} deal${filtered.length === 1 ? '' : 's'}`
       : `${filtered.length} deal${filtered.length === 1 ? '' : 's'}`;
+
+    sortRow.hidden = filtered.length < 2;
 
     cardsEl.innerHTML = '';
     if (filtered.length === 0) {
@@ -363,12 +479,24 @@
     searchEl.value = '';
   }
 
+  let currentTitle = '';
+
   function showResults(filterFn, title) {
     currentFilter = filterFn;
+    currentTitle = title;
     presetsSection.hidden = true;
     resultsSection.hidden = false;
     renderResults(title);
   }
+
+  sortBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      sortBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+      currentSort = btn.dataset.sort;
+      renderResults(currentTitle);
+    });
+  });
 
   function renderPresets() {
     presetGrid.innerHTML = '';
