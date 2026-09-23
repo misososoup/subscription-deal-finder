@@ -52,43 +52,107 @@
   }
   .wrap { max-width: 900px; margin: 0 auto; }
 
-  header { padding: 24px 0 16px; }
-  h1 { font-size: 1.5rem; margin: 0 0 4px; }
-  .subtitle { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
-  .meta { color: var(--text-muted); font-size: 0.82rem; margin-top: 10px; }
+  header { padding: 20px 0 4px; }
+  h1 { font-size: 1.3rem; margin: 0 0 4px; }
+  .subtitle { color: var(--text-muted); font-size: 0.9rem; margin: 0; }
+  .meta { color: var(--text-muted); font-size: 0.8rem; margin-top: 8px; }
 
-  .controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 18px 0;
+  /* Hero / ask box */
+  .hero {
+    text-align: center;
+    padding: 36px 12px 28px;
   }
+  .hero-q {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 0 18px;
+  }
+  .search-row { max-width: 520px; margin: 0 auto; position: relative; }
   input[type="search"] {
-    flex: 1 1 220px;
-    padding: 10px 14px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 0.95rem;
-  }
-  input[type="search"]:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
-
-  .chip {
-    padding: 8px 14px;
+    width: 100%;
+    padding: 15px 18px;
     border-radius: 999px;
     border: 1px solid var(--border);
     background: var(--surface);
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    cursor: pointer;
-    user-select: none;
+    color: var(--text);
+    font-size: 1rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
   }
-  .chip[aria-pressed="true"] {
-    background: var(--accent-soft);
-    color: var(--accent);
+  input[type="search"]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .hero-hint { color: var(--text-muted); font-size: 0.8rem; margin-top: 10px; }
+
+  /* Popular picks grid */
+  .presets-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin: 0 0 12px;
+  }
+  .preset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+  .preset-card {
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+  }
+  .preset-card:hover, .preset-card:focus-visible {
     border-color: var(--accent);
+    outline: none;
+  }
+  .preset-card .preset-label {
+    font-weight: 700;
+    font-size: 0.98rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .preset-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--dot, var(--accent));
+    flex: none;
+  }
+  .preset-card .preset-desc {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    margin: 5px 0 8px;
+  }
+  .preset-count {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+  }
+
+  /* Results */
+  .results-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 8px 0 12px;
+  }
+  .back-link {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 0.85rem;
     font-weight: 600;
+    cursor: pointer;
+    padding: 6px 0;
+    font: inherit;
+  }
+  .results-title {
+    font-size: 0.85rem;
+    color: var(--text-muted);
   }
 
   .cards { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
@@ -147,7 +211,7 @@
 
   .empty {
     text-align: center;
-    padding: 48px 16px;
+    padding: 40px 16px;
     color: var(--text-muted);
   }
   .empty code {
@@ -176,18 +240,27 @@
     <p class="meta" id="meta"></p>
   </header>
 
-  <div class="controls">
-    <input type="search" id="search" placeholder="Search provider or deal…" aria-label="Search deals">
-    <div class="chip" role="button" tabindex="0" data-cat="all" aria-pressed="true">All</div>
-    <div class="chip" role="button" tabindex="0" data-cat="streaming" aria-pressed="false">Streaming</div>
-    <div class="chip" role="button" tabindex="0" data-cat="carrier" aria-pressed="false">Carrier</div>
-    <div class="chip" role="button" tabindex="0" data-cat="membership" aria-pressed="false">Membership</div>
-    <div class="chip" role="button" tabindex="0" data-cat="productivity" aria-pressed="false">Productivity</div>
-    <div class="chip" role="button" tabindex="0" data-cat="creditcard" aria-pressed="false">Credit Card</div>
-    <div class="chip" role="button" tabindex="0" data-cat="stacking" aria-pressed="false">Stacking</div>
-  </div>
+  <section class="hero">
+    <label class="hero-q" for="search">What do you want to watch today?</label>
+    <div class="search-row">
+      <input type="search" id="search" placeholder="Try “Netflix”, “student discount”, “Walmart”…" aria-label="Search deals">
+    </div>
+    <p class="hero-hint">Search anything, or pick a popular combo below.</p>
+  </section>
 
-  <div class="cards" id="cards"></div>
+  <section id="presetsSection">
+    <p class="presets-title">Popular picks</p>
+    <div class="preset-grid" id="presetGrid"></div>
+  </section>
+
+  <section id="resultsSection" hidden>
+    <div class="results-head">
+      <button type="button" class="back-link" id="backBtn">&larr; Back to popular picks</button>
+      <span class="results-title" id="resultsTitle"></span>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
   <div class="empty" id="empty" hidden>
     No deals logged yet. Run the <code>subscription-deal-finder</code> skill in Claude (or your own copy of it),
     then log what it finds with <code>python3 scripts/deal_log.py add …</code> and push the updated
@@ -206,12 +279,37 @@
   const emptyEl = document.getElementById('empty');
   const metaEl = document.getElementById('meta');
   const searchEl = document.getElementById('search');
-  const chips = Array.from(document.querySelectorAll('.chip'));
+  const presetsSection = document.getElementById('presetsSection');
+  const presetGrid = document.getElementById('presetGrid');
+  const resultsSection = document.getElementById('resultsSection');
+  const resultsTitle = document.getElementById('resultsTitle');
+  const backBtn = document.getElementById('backBtn');
 
   let allDeals = [];
   let lastRun = null;
-  let activeCat = 'all';
-  let query = '';
+  let currentFilter = () => true;
+
+  // Curated "popular combinations" — each is a predicate over a deal record.
+  // Keyword-based ones (student, stack) stay live-accurate as deals_log.json
+  // grows, rather than hardcoding specific provider names/prices.
+  const PRESETS = [
+    { id: 'streaming', label: 'Streaming bundles', desc: 'Netflix, Max, Disney+, Hulu, ESPN & more', dot: 'streaming',
+      match: d => d.category === 'streaming' },
+    { id: 'carrier', label: 'Carrier perks', desc: 'Free or discounted service bundled into your phone plan', dot: 'carrier',
+      match: d => d.category === 'carrier' },
+    { id: 'student', label: 'Student stack', desc: 'Discounts that require student verification', dot: 'accent',
+      match: d => /student/i.test(d.deal + ' ' + (d.conditions || '')) },
+    { id: 'membership', label: 'Membership bundles', desc: 'Amazon Prime, Walmart+, Costco, delivery memberships', dot: 'membership',
+      match: d => d.category === 'membership' },
+    { id: 'productivity', label: 'Productivity bundles', desc: 'Apple One, Google One, Microsoft 365', dot: 'productivity',
+      match: d => d.category === 'productivity' },
+    { id: 'creditcard', label: 'Credit card credits', desc: 'Subscription credits tied to a card you may already have', dot: 'creditcard',
+      match: d => d.category === 'creditcard' },
+    { id: 'stacking', label: 'Worth stacking', desc: 'Combos that work well together', dot: 'stacking',
+      match: d => d.category === 'stacking' },
+    { id: 'all', label: 'Everything', desc: 'Browse the full current list', dot: 'accent',
+      match: () => true },
+  ];
 
   function escapeHtml(str) {
     return String(str)
@@ -221,68 +319,90 @@
       .replace(/"/g, '&quot;');
   }
 
-  function render() {
-    const q = query.trim().toLowerCase();
-    const filtered = allDeals.filter(d => {
-      if (activeCat !== 'all' && d.category !== activeCat) return false;
-      if (!q) return true;
-      return (d.provider + ' ' + d.deal + ' ' + (d.conditions || ''))
-        .toLowerCase()
-        .includes(q);
-    });
+  function dealCard(d) {
+    const isNew = lastRun && d.first_seen === lastRun;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="provider">${escapeHtml(d.provider)} ${isNew ? '<span class="new-pill">NEW</span>' : ''}</span>
+        <span class="badge ${escapeHtml(d.category)}">${escapeHtml(d.category)}</span>
+      </div>
+      <p class="deal-text">${escapeHtml(d.deal)}</p>
+      <dl class="details">
+        ${d.conditions ? `<dt>Conditions</dt><dd>${escapeHtml(d.conditions)}</dd>` : ''}
+        ${d.expires ? `<dt>Expires</dt><dd>${escapeHtml(d.expires)}</dd>` : ''}
+        ${d.source ? `<dt>Source</dt><dd><a href="${escapeHtml(d.source)}" target="_blank" rel="noopener">${escapeHtml(d.source)}</a></dd>` : ''}
+        <dt>First / last seen</dt><dd>${escapeHtml(d.first_seen)} → ${escapeHtml(d.last_seen)}</dd>
+      </dl>
+    `;
+    return card;
+  }
 
-    filtered.sort((a, b) => {
+  function renderResults(title) {
+    const filtered = allDeals.filter(currentFilter).sort((a, b) => {
       if (a.last_seen !== b.last_seen) return a.last_seen < b.last_seen ? 1 : -1;
       return a.provider.localeCompare(b.provider);
     });
 
-    cardsEl.innerHTML = '';
-    emptyEl.hidden = filtered.length > 0 || allDeals.length > 0;
-    if (allDeals.length === 0) { emptyEl.hidden = false; return; }
+    resultsTitle.textContent = title
+      ? `${title} · ${filtered.length} deal${filtered.length === 1 ? '' : 's'}`
+      : `${filtered.length} deal${filtered.length === 1 ? '' : 's'}`;
 
+    cardsEl.innerHTML = '';
     if (filtered.length === 0) {
-      cardsEl.innerHTML = '<div class="empty">No deals match that search/filter.</div>';
+      cardsEl.innerHTML = '<div class="empty">No deals match that yet.</div>';
       return;
     }
-
-    for (const d of filtered) {
-      const isNew = lastRun && d.first_seen === lastRun;
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <div class="card-top">
-          <span class="provider">${escapeHtml(d.provider)} ${isNew ? '<span class="new-pill">NEW</span>' : ''}</span>
-          <span class="badge ${escapeHtml(d.category)}">${escapeHtml(d.category)}</span>
-        </div>
-        <p class="deal-text">${escapeHtml(d.deal)}</p>
-        <dl class="details">
-          ${d.conditions ? `<dt>Conditions</dt><dd>${escapeHtml(d.conditions)}</dd>` : ''}
-          ${d.expires ? `<dt>Expires</dt><dd>${escapeHtml(d.expires)}</dd>` : ''}
-          ${d.source ? `<dt>Source</dt><dd><a href="${escapeHtml(d.source)}" target="_blank" rel="noopener">${escapeHtml(d.source)}</a></dd>` : ''}
-          <dt>First / last seen</dt><dd>${escapeHtml(d.first_seen)} → ${escapeHtml(d.last_seen)}</dd>
-        </dl>
-      `;
-      cardsEl.appendChild(card);
-    }
+    for (const d of filtered) cardsEl.appendChild(dealCard(d));
   }
 
-  chips.forEach(chip => {
-    const activate = () => {
-      chips.forEach(c => c.setAttribute('aria-pressed', 'false'));
-      chip.setAttribute('aria-pressed', 'true');
-      activeCat = chip.dataset.cat;
-      render();
-    };
-    chip.addEventListener('click', activate);
-    chip.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
-    });
-  });
+  function showBrowse() {
+    resultsSection.hidden = true;
+    presetsSection.hidden = false;
+    searchEl.value = '';
+  }
+
+  function showResults(filterFn, title) {
+    currentFilter = filterFn;
+    presetsSection.hidden = true;
+    resultsSection.hidden = false;
+    renderResults(title);
+  }
+
+  function renderPresets() {
+    presetGrid.innerHTML = '';
+    let anyVisible = false;
+    for (const preset of PRESETS) {
+      const count = allDeals.filter(preset.match).length;
+      if (count === 0) continue;
+      anyVisible = true;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'preset-card';
+      btn.innerHTML = `
+        <span class="preset-label"><span class="preset-dot" style="--dot: var(--${preset.dot})"></span>${escapeHtml(preset.label)}</span>
+        <div class="preset-desc">${escapeHtml(preset.desc)}</div>
+        <div class="preset-count">${count} deal${count === 1 ? '' : 's'}</div>
+      `;
+      btn.addEventListener('click', () => showResults(preset.match, preset.label));
+      presetGrid.appendChild(btn);
+    }
+    presetsSection.hidden = !anyVisible;
+  }
 
   searchEl.addEventListener('input', e => {
-    query = e.target.value;
-    render();
+    const q = e.target.value.trim().toLowerCase();
+    if (!q) { showBrowse(); return; }
+    showResults(
+      d => (d.provider + ' ' + d.deal + ' ' + (d.conditions || '') + ' ' + d.category)
+        .toLowerCase()
+        .includes(q),
+      `Results for “${e.target.value.trim()}”`
+    );
   });
+
+  backBtn.addEventListener('click', showBrowse);
 
   fetch('deals_log.json', { cache: 'no-store' })
     .then(r => r.json())
@@ -293,10 +413,17 @@
       metaEl.textContent = allDeals.length
         ? `${allDeals.length} deal${allDeals.length === 1 ? '' : 's'} tracked · last run ${lastRun || 'unknown'}`
         : 'No runs logged yet.';
-      render();
+
+      if (allDeals.length === 0) {
+        presetsSection.hidden = true;
+        emptyEl.hidden = false;
+        return;
+      }
+      renderPresets();
     })
     .catch(() => {
       metaEl.textContent = 'Could not load deals_log.json.';
+      presetsSection.hidden = true;
       emptyEl.hidden = false;
     });
 })();
