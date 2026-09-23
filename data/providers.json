@@ -1,0 +1,42 @@
+{
+  "_comment": "Reference list only — a starting point for what to search, NOT current prices or offers. Always verify live (see SKILL.md Step 2). Update this file occasionally as new providers/bundle types emerge.",
+  "streaming": [
+    { "name": "Netflix", "site": "netflix.com" },
+    { "name": "Max (HBO Max)", "site": "max.com" },
+    { "name": "Disney+", "site": "disneyplus.com" },
+    { "name": "Hulu", "site": "hulu.com" },
+    { "name": "ESPN+", "site": "espn.com/espnplus" },
+    { "name": "Paramount+", "site": "paramountplus.com" },
+    { "name": "Peacock", "site": "peacocktv.com" },
+    { "name": "Apple TV+", "site": "tv.apple.com" },
+    { "name": "Amazon Prime Video", "site": "amazon.com/primevideo" },
+    { "name": "Spotify", "site": "spotify.com" },
+    { "name": "YouTube Premium / Music", "site": "youtube.com/premium" },
+    { "name": "Audible", "site": "audible.com" }
+  ],
+  "mobile_carriers": [
+    {
+      "name": "T-Mobile",
+      "site": "t-mobile.com",
+      "known_bundle_pattern": "Historically bundles streaming perks (e.g. Netflix, Apple TV+, MLB.TV) into higher-tier unlimited plans. Verify current plan tier and included perk live."
+    },
+    {
+      "name": "Verizon",
+      "site": "verizon.com",
+      "known_bundle_pattern": "myPlan perks system lets customers add streaming perks (e.g. Disney Bundle, Netflix/Max) for a flat add-on price or free on top tiers. +play is Verizon's separate bundling storefront for third-party subscriptions. Verify current perk lineup live."
+    },
+    {
+      "name": "AT&T",
+      "site": "att.com",
+      "known_bundle_pattern": "Has periodically included streaming credits/bundles (e.g. HBO Max in the past) on unlimited plans, and DIRECTV STREAM bundle promos. Verify current offer live — this has changed multiple times."
+    }
+  ],
+  "stacking_categories": [
+    "Student discounts (Spotify Premium Student often bundles Hulu; Amazon Prime Student)",
+    "Family/duo plan splitting for Spotify, YouTube Premium, Apple One",
+    "Credit card offer portals (Amex Offers, Chase Offers) for statement credits on streaming",
+    "Annual vs monthly billing discounts on individual services",
+    "Discounted gift cards at warehouse clubs (Costco, Sam's Club) for streaming/gift subscriptions",
+    "Apple One / Google One style first-party service bundles"
+  ]
+}
