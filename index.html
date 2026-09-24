@@ -522,10 +522,18 @@
   searchEl.addEventListener('input', e => {
     const q = e.target.value.trim().toLowerCase();
     if (!q) { showBrowse(); return; }
+    // Match on significant words (3+ letters), not the whole typed phrase —
+    // lets a natural question like "I want to watch the US Open" still find
+    // deals whose text contains "open" or "espn", instead of requiring the
+    // entire sentence to appear verbatim in a deal's text.
+    const words = q.split(/\s+/).filter(w => w.length >= 3);
+    const terms = words.length ? words : [q];
     showResults(
-      d => (d.provider + ' ' + d.deal + ' ' + (d.conditions || '') + ' ' + d.category)
-        .toLowerCase()
-        .includes(q),
+      d => {
+        const text = (d.provider + ' ' + d.deal + ' ' + (d.conditions || '') + ' ' + d.category)
+          .toLowerCase();
+        return terms.some(term => text.includes(term));
+      },
       `Results for “${e.target.value.trim()}”`
     );
   });
